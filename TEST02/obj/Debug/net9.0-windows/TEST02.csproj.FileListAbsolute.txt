@@ -1,0 +1,14 @@
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\TEST02.GeneratedMSBuildEditorConfig.editorconfig
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\TEST02.AssemblyInfoInputs.cache
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\TEST02.AssemblyInfo.cs
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\TEST02.csproj.CoreCompileInputs.cache
+E:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\TEST02.genruntimeconfig.cache
+e:\GitHub\TEST02\TEST02\bin\Debug\net9.0-windows\セラピストELIZA.exe
+E:\GitHub\TEST02\TEST02\bin\Debug\net9.0-windows\セラピストELIZA.deps.json
+E:\GitHub\TEST02\TEST02\bin\Debug\net9.0-windows\セラピストELIZA.runtimeconfig.json
+e:\GitHub\TEST02\TEST02\bin\Debug\net9.0-windows\セラピストELIZA.dll
+e:\GitHub\TEST02\TEST02\bin\Debug\net9.0-windows\セラピストELIZA.pdb
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\セラピストELIZA.dll
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\refint\セラピストELIZA.dll
+e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\セラピストELIZA.pdb
+E:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\ref\セラピストELIZA.dll
