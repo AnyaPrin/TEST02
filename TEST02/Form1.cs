@@ -10,6 +10,8 @@ public partial class Form1 : Form
     private const string ImageFileName = "test02.jpg"; // 画像ファイル名
     private TransparentRichTextBox? outputTextBox; // TransparentRichTextBox に変更
     private TextBox? inputTextBox; // Null許容に変更
+    private Random random = new Random(); // ランダムな応答を選ぶために追加
+    private string[] catResponses = { "にゃ", "にゃー", "にゃーん" }; // 猫の応答候補
     // private const string ImageFileName = "dummy.jpg"; // テスト用
 
     public Form1()
@@ -81,25 +83,60 @@ public partial class Form1 : Form
     }
 
 
-    private void InputTextBox_KeyDown(object sender, KeyEventArgs e)
+    private async void InputTextBox_KeyDown(object sender, KeyEventArgs e) // async を追加
     {
         if (e.KeyCode == Keys.Enter)
         {
             e.SuppressKeyPress = true; // Enterキー入力時のビープ音を抑制
+
+            // inputTextBoxがnullの場合は何もしない（念のため）
+            if (inputTextBox == null) return;
+
             string userInput = inputTextBox!.Text.Trim(); // inputTextBoxがnullでないことを前提とする (null免除演算子)
-            if (!string.IsNullOrEmpty(userInput))
+
+            if (!string.IsNullOrEmpty(userInput) && outputTextBox != null)
             {
-                if (outputTextBox != null)
+                try
                 {
+                    // ユーザーの入力を表示
+                    outputTextBox.SelectionColor = Color.Gray; // ユーザー入力の色を設定
                     outputTextBox.AppendText(userInput + Environment.NewLine);
-                    outputTextBox.AppendText("にゃ？" + Environment.NewLine); // 「にゃ？」の応答を追加
+
+                    // 0.5秒待機
+                    await Task.Delay(500);
+
+                    // 待機後にコントロールが破棄されていないか確認
+                    if (this.IsDisposed || outputTextBox.IsDisposed || inputTextBox.IsDisposed)
+                    {
+                        return; // 破棄されていれば処理を中断
+                    }
+
+                    // 猫の応答を表示
+                    string response = catResponses[random.Next(catResponses.Length)]; // ランダムに応答を選択
+                    outputTextBox.SelectionColor = Color.White; // 猫の応答の色を設定
+                    outputTextBox.AppendText(response + Environment.NewLine); // 選択された応答を追加
+
+                    inputTextBox.Clear();
                 }
-                else
+                catch (ObjectDisposedException odEx)
                 {
-                    // outputTextBox が null の場合、ユーザーには InitializeCustomComponents で既にエラーメッセージが表示されているはずです。
-                    System.Diagnostics.Debug.WriteLine("警告: outputTextBox が null のため、テキスト追加をスキップしました。");
+                    System.Diagnostics.Debug.WriteLine($"UI要素が破棄されました: {odEx.Message}");
                 }
-                inputTextBox.Clear();
+                catch (Exception ex) // その他の予期せぬ例外をキャッチ
+                {
+                    System.Diagnostics.Debug.WriteLine($"InputTextBox_KeyDownでエラーが発生しました: {ex.Message}");
+                    // 必要であればユーザーにエラーを通知
+                }
+            }
+            else if (outputTextBox == null && !string.IsNullOrEmpty(userInput))
+            {
+                System.Diagnostics.Debug.WriteLine("警告: outputTextBox が null のため、テキスト追加をスキップしました。");
+                if (inputTextBox != null) inputTextBox.Clear(); // この場合も入力はクリアする
+            }
+            else if (inputTextBox != null) // userInputが空の場合でも、inputTextBoxがnullでなければクリア
+            {
+                // userInputが空でもEnterが押されたら入力欄をクリアする場合
+                // inputTextBox.Clear(); // この行は、ユーザーが空の入力をEnterした場合の挙動によります。現状はクリアしません。
             }
         }
     }
