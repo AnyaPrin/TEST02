@@ -11,7 +11,7 @@ public partial class Form1 : Form
     private TransparentRichTextBox? outputTextBox; // TransparentRichTextBox に変更
     private TextBox? inputTextBox; // Null許容に変更
     private Random random = new Random(); // ランダムな応答を選ぶために追加
-    private string[] catResponses = { "にゃ", "にゃー", "にゃーん" }; // 猫の応答候補
+    private string[] catResponses = { "にゃ", "にゃー", "にゃーん", "シャー！" }; // 猫の応答候補
     // private const string ImageFileName = "dummy.jpg"; // テスト用
 
     public Form1()

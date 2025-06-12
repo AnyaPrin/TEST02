@@ -1,0 +1,8 @@
+# .NET Core build output folders
+[Bb]in/
+[Oo]bj/
+
+# Other common files to ignore
+*.user
+*.suo
+*.vs/
