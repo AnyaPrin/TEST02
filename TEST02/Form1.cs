@@ -38,7 +38,7 @@ public partial class Form1 : Form
                 Dock = DockStyle.Fill, // 残り領域を埋める
                 BackColor = Color.Transparent, // 背景を透明に
                 // ForeColor = Color.White, // 文字色を白に設定
-                ForeColor = Color.Red, // デバッグ用。デバッグ時の確認を容易にするため赤に設定。最終的には白の戻す予定 by Anyaprin
+                ForeColor = Color.Red, // デバッグ用。デバッグ時の確認を容易にするため赤に設定。最終的には白に戻す予定 by Anyaprin
                 BorderStyle = BorderStyle.None, // 境界線を消す (任意)
                 Text = "" // 初期テキスト
             };
