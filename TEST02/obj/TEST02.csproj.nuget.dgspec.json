@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "e:\\GitHub\\TEST02\\TEST02\\TEST02.csproj": {}
+    "E:\\GitHub\\TEST02\\TEST02\\TEST02.csproj": {}
   },
   "projects": {
-    "e:\\GitHub\\TEST02\\TEST02\\TEST02.csproj": {
+    "E:\\GitHub\\TEST02\\TEST02\\TEST02.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "e:\\GitHub\\TEST02\\TEST02\\TEST02.csproj",
+        "projectUniqueName": "E:\\GitHub\\TEST02\\TEST02\\TEST02.csproj",
         "projectName": "セラピストNyaLIZA",
-        "projectPath": "e:\\GitHub\\TEST02\\TEST02\\TEST02.csproj",
+        "projectPath": "E:\\GitHub\\TEST02\\TEST02\\TEST02.csproj",
         "packagesPath": "C:\\Users\\Yuko\\.nuget\\packages\\",
-        "outputPath": "e:\\GitHub\\TEST02\\TEST02\\obj\\",
+        "outputPath": "E:\\GitHub\\TEST02\\TEST02\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
