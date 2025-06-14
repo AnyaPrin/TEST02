@@ -9,4 +9,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- cat_responses.txt を出力ディレクトリにコピーするための設定 -->
+ <ItemGroup>
+    <None Update="cat_responses.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+<!-- 
+CopyToOutputDirectory
+    PreservNewest: 新しい場合のみコピー
+    Alway: 常にコピー 
+-->
+
+    </None>
+  </ItemGroup>
+
 </Project>

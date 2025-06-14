@@ -13,3 +13,4 @@ e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\セラピストNyaLIZA.dll
 e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\refint\セラピストNyaLIZA.dll
 e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\セラピストNyaLIZA.pdb
 e:\GitHub\TEST02\TEST02\obj\Debug\net9.0-windows\ref\セラピストNyaLIZA.dll
+e:\GitHub\TEST02\TEST02\bin\Debug\net9.0-windows\cat_responses.txt

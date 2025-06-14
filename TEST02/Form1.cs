@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Windows.Forms; // Labelコントロールを使用するために追加
 using System.IO; // FileNotFoundExceptionを使用するために追加
 
+
 namespace TEST02;
 
 public partial class Form1 : Form
@@ -10,8 +11,8 @@ public partial class Form1 : Form
     private const string ImageFileName = "test02.jpg"; // 画像ファイル名
     private TransparentRichTextBox? outputTextBox; // TransparentRichTextBox に変更
     private TextBox? inputTextBox; // Null許容に変更
-    private Random random = new Random(); // ランダムな応答を選ぶために追加
-    private string[] catResponses = { "にゃ", "にゃー", "にゃーん", "シャー！" }; // 猫の応答候補
+    private Random random = new Random();
+    private string[] catResponses = Array.Empty<string>(); // 初期値は空の配列
     // private const string ImageFileName = "dummy.jpg"; // テスト用
 
     public Form1()
@@ -19,10 +20,46 @@ public partial class Form1 : Form
         InitializeComponent();
         this.DoubleBuffered = true; // フォームのダブルバッファリングを有効にする
         InitializeCustomComponents();
-        this.Text = "セラピストELIZA"; // ウィンドウタイトルを設定
+        this.Text = "NyaLIZA"; // ウィンドウタイトルを設定
         LoadBackgroundImage();
-
+        LoadCatResponses(); // 応答リストを読み込む
+         
         this.FormClosed += Form1_FormClosed!; // FormClosedイベントハンドラを登録
+    }
+
+    private void LoadCatResponses()
+    {
+        const string responsesFileName = "cat_responses.txt";
+        // string filePath = Path.Combine(Application.StartupPath, responsesFileName); // WinFormsの場合
+        string filePath = Path.Combine(AppContext.BaseDirectory, responsesFileName); // .NET Core / .NET 5+ 推奨
+        System.Diagnostics.Debug.WriteLine($"応答リスト: {filePath}");
+
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                catResponses = File.ReadAllLines(filePath).Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
+            }
+            else
+            {
+                // ファイルが存在しない場合は、空のファイルを作成し、応答リストも空にする
+                File.WriteAllText(filePath, string.Empty); // 空のファイルを作成
+                catResponses = Array.Empty<string>();
+                System.Diagnostics.Debug.WriteLine("応答リストファイルが見つからなかったので、空のファイルを作成しました。");
+            }
+
+            if (catResponses.Length == 0)
+            {
+                // 起動時にcatResponsesが空の場合の初期メッセージ（これはオプション）
+                catResponses = new[] { "にゃ？（まだ何も知らないにゃ。/add で教えてにゃ）" };
+                System.Diagnostics.Debug.WriteLine("応答リストは現在空です。");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"猫の応答リストの読み込みに失敗しました: {ex.Message}");
+            catResponses = new[] { "にゃーん…（エラーだにゃ）" }; // エラー時のデフォルト応答
+        }
     }
 
     private void InitializeCustomComponents()
@@ -88,56 +125,142 @@ public partial class Form1 : Form
         if (e.KeyCode == Keys.Enter)
         {
             e.SuppressKeyPress = true; // Enterキー入力時のビープ音を抑制
-
-            // inputTextBoxがnullの場合は何もしない（念のため）
             if (inputTextBox == null) return;
 
-            string userInput = inputTextBox!.Text.Trim(); // inputTextBoxがnullでないことを前提とする (null免除演算子)
+            string userInput = inputTextBox.Text.Trim();
+            inputTextBox.Clear(); // 入力後、テキストボックスをクリア
 
-            if (!string.IsNullOrEmpty(userInput) && outputTextBox != null)
+            if (string.IsNullOrEmpty(userInput)) return; // 空の入力は何もしない
+
+            if (outputTextBox == null || outputTextBox.IsDisposed)
+            {
+                System.Diagnostics.Debug.WriteLine("警告: outputTextBox が null または破棄されているため、処理をスキップしました。");
+                return;
+            }
+
+            // コマンド処理
+            if (userInput.StartsWith("/"))
+            {
+                await ProcessCommandAsync(userInput);
+            }
+            else // 通常のメッセージ処理
             {
                 try
                 {
                     // ユーザーの入力を表示
                     outputTextBox.SelectionColor = Color.Gray; // ユーザー入力の色を設定
                     outputTextBox.AppendText(userInput + Environment.NewLine);
-
+    
                     // 0.5秒待機
                     await Task.Delay(500);
-
+    
                     // 待機後にコントロールが破棄されていないか確認
-                    if (this.IsDisposed || outputTextBox.IsDisposed || inputTextBox.IsDisposed)
+                    if (this.IsDisposed || outputTextBox.IsDisposed || (inputTextBox != null && inputTextBox.IsDisposed))
                     {
                         return; // 破棄されていれば処理を中断
                     }
-
+    
                     // 猫の応答を表示
-                    string response = catResponses[random.Next(catResponses.Length)]; // ランダムに応答を選択
+                    string response;
+                    if (catResponses.Length > 0)
+                    {
+                        response = catResponses[random.Next(catResponses.Length)]; // ランダムに応答を選択
+                    }
+                    else
+                    {
+                        response = "にゃ？（まだ何も知らないにゃ。/add で教えてにゃ）";
+                    }
+    
                     outputTextBox.SelectionColor = Color.White; // 猫の応答の色を設定
                     outputTextBox.AppendText(response + Environment.NewLine); // 選択された応答を追加
-
-                    inputTextBox.Clear();
                 }
                 catch (ObjectDisposedException odEx)
                 {
                     System.Diagnostics.Debug.WriteLine($"UI要素が破棄されました: {odEx.Message}");
                 }
-                catch (Exception ex) // その他の予期せぬ例外をキャッチ
+                catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"InputTextBox_KeyDownでエラーが発生しました: {ex.Message}");
-                    // 必要であればユーザーにエラーを通知
                 }
             }
-            else if (outputTextBox == null && !string.IsNullOrEmpty(userInput))
+        }
+    }
+
+    private async Task ProcessCommandAsync(string commandInput)
+    {
+        if (outputTextBox == null || outputTextBox.IsDisposed) return;
+
+        string[] parts = commandInput.Split(new[] { ' ' }, 2);
+        string command = parts[0].ToLower();
+
+        try
+        {
+            if (command == "/exit")
             {
-                System.Diagnostics.Debug.WriteLine("警告: outputTextBox が null のため、テキスト追加をスキップしました。");
-                if (inputTextBox != null) inputTextBox.Clear(); // この場合も入力はクリアする
+                Application.Exit();
             }
-            else if (inputTextBox != null) // userInputが空の場合でも、inputTextBoxがnullでなければクリア
+            else if (command == "/add" && parts.Length > 1)
             {
-                // userInputが空でもEnterが押されたら入力欄をクリアする場合
-                // inputTextBox.Clear(); // この行は、ユーザーが空の入力をEnterした場合の挙動によります。現状はクリアしません。
+                string newResponse = parts[1].Trim();
+                if (!string.IsNullOrEmpty(newResponse))
+                {
+                    await AddResponseToFileAsync(newResponse);
+                    
+                    List<string> tempResponses = catResponses.ToList();
+                    if (!tempResponses.Contains(newResponse)) // 重複を避ける場合
+                    {
+                        tempResponses.Add(newResponse);
+                        catResponses = tempResponses.ToArray();
+                        outputTextBox.SelectionColor = Color.Aqua; 
+                        outputTextBox.AppendText($"応答「{newResponse}」を追加しましたにゃ。{Environment.NewLine}");
+                    }
+                    else
+                    {
+                        outputTextBox.SelectionColor = Color.Yellow;
+                        outputTextBox.AppendText($"応答「{newResponse}」は既にあるにゃ。{Environment.NewLine}");
+                    }
+                }
+                else
+                {
+                    outputTextBox.SelectionColor = Color.Orange;
+                    outputTextBox.AppendText($"追加する応答内容が空っぽだにゃ。 (例: /add にゃーん){Environment.NewLine}");
+                }
             }
+            else
+            {
+                outputTextBox.SelectionColor = Color.Orange;
+                outputTextBox.AppendText($"知らないコマンドだにゃ: {commandInput}{Environment.NewLine}");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"コマンド「{commandInput}」の処理中にエラー: {ex.Message}");
+            if (!outputTextBox.IsDisposed)
+            {
+                outputTextBox.SelectionColor = Color.Red;
+                outputTextBox.AppendText($"コマンド処理でエラーが起きたにゃ…{Environment.NewLine}");
+            }
+        }
+    }
+
+    private async Task AddResponseToFileAsync(string newResponse)
+    {
+        const string responsesFileName = "cat_responses.txt";
+        string filePath = Path.Combine(AppContext.BaseDirectory, responsesFileName);
+        try
+        {
+            await File.AppendAllTextAsync(filePath, newResponse + Environment.NewLine);
+            System.Diagnostics.Debug.WriteLine($"応答をファイルに追加しました: {newResponse}");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"ファイルへの応答「{newResponse}」追加に失敗: {ex.Message}");
+            if (outputTextBox != null && !outputTextBox.IsDisposed)
+            {
+                outputTextBox.SelectionColor = Color.Red;
+                outputTextBox.AppendText($"応答「{newResponse}」のファイル保存に失敗したにゃ…{Environment.NewLine}");
+            }
+            throw; // ProcessCommandAsyncでキャッチさせる
         }
     }
 
