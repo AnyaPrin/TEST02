@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("セラピストNyaLIZA")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("NyaLIZA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9509adf2da91868dc02d05a4a5b076fc0e861f52")]
-[assembly: System.Reflection.AssemblyProductAttribute("セラピストNyaLIZA")]
-[assembly: System.Reflection.AssemblyTitleAttribute("セラピストNyaLIZA")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7cabfaad5decc8e7b5b72bbee27f34273d22ac91")]
+[assembly: System.Reflection.AssemblyProductAttribute("NyaLIZA")]
+[assembly: System.Reflection.AssemblyTitleAttribute("NyaLIZA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
