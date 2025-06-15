@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("セラピストNyaLIZA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b20e8e8c1524233ea769c0b33386e7d79ec1f226")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9509adf2da91868dc02d05a4a5b076fc0e861f52")]
 [assembly: System.Reflection.AssemblyProductAttribute("セラピストNyaLIZA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("セラピストNyaLIZA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

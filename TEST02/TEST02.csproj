@@ -12,14 +12,16 @@
   <!-- cat_responses.txt を出力ディレクトリにコピーするための設定 -->
  <ItemGroup>
     <None Update="cat_responses.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="test02.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 <!-- 
 CopyToOutputDirectory
     PreservNewest: 新しい場合のみコピー
-    Alway: 常にコピー 
+    Always: 常にコピー 
 -->
-
-    </None>
-  </ItemGroup>
 
 </Project>
