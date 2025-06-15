@@ -8,6 +8,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+ 
 
   <!-- cat_responses.txt を出力ディレクトリにコピーするための設定 -->
  <ItemGroup>

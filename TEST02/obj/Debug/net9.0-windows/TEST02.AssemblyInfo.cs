@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NyaLIZA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7cabfaad5decc8e7b5b72bbee27f34273d22ac91")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+852fa9ce61344f8375cb365b78bd78544ebc255e")]
 [assembly: System.Reflection.AssemblyProductAttribute("NyaLIZA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NyaLIZA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
