@@ -21,7 +21,7 @@ NyaLIZA(ニャライザ) はあなたのすべてを受け入れます。
 
 ## 必要な環境
 
-*   Windows OS
+*   Windows OS （動作を確認したのは Window10 のみ）
 
 ## その他
 
