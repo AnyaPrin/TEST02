@@ -1,23 +1,30 @@
 using System.Drawing;
 using System.Windows.Forms; // Labelコントロールを使用するために追加
-using System.IO; // FileNotFoundExceptionを使用するために追加
-
+using System.IO;
+using Microsoft.Extensions.Configuration; // IConfiguration を使用するために追加
 
 namespace TEST02;
 
 public partial class Form1 : Form
 {
     private Font? originalFont; // Null許容に変更
-    private const string ImageFileName = "test02.jpg"; // 画像ファイル名
+    private readonly string _imageFileName;
+    private readonly string _catResponsesFileName;
+   
     private TransparentRichTextBox? outputTextBox; // TransparentRichTextBox に変更
     private TextBox? inputTextBox; // Null許容に変更
     private Random random = new Random();
     private string[] catResponses = Array.Empty<string>(); // 初期値は空の配列
     // private const string ImageFileName = "dummy.jpg"; // テスト用
 
-    public Form1()
+    public Form1(IConfiguration configuration) // IConfigurationを受け取るコンストラクタ
     {
         InitializeComponent();
+
+        // 設定ファイルからファイル名を読み込む (デフォルト値も設定)
+        _imageFileName = configuration.GetValue<string>("AppSettings:ImageFileName") ?? "test02.jpg"; // appsettings.jsonから画像ファイル名を取得
+        _catResponsesFileName = configuration.GetValue<string>("AppSettings:CatResponsesFileName") ?? "cat_responses.txt"; // appsettings.jsonから応答ファイル名を取得
+    
         this.DoubleBuffered = true; // フォームのダブルバッファリングを有効にする
         InitializeCustomComponents();
         this.Text = "NyaLIZA"; // ウィンドウタイトルを設定
@@ -29,9 +36,8 @@ public partial class Form1 : Form
 
     private void LoadCatResponses()
     {
-        const string responsesFileName = "cat_responses.txt";
         // string filePath = Path.Combine(Application.StartupPath, responsesFileName); // WinFormsの場合
-        string filePath = Path.Combine(AppContext.BaseDirectory, responsesFileName); // .NET Core / .NET 5+ 推奨
+        string filePath = Path.Combine(AppContext.BaseDirectory, _catResponsesFileName); // .NET Core / .NET 5+ 推奨
         System.Diagnostics.Debug.WriteLine($"応答リスト: {filePath}");
 
         try
@@ -105,12 +111,12 @@ public partial class Form1 : Form
         try
         {
             // 背景画像を設定 (実行ファイルのディレクトリにあることを想定)
-            this.BackgroundImage = Image.FromFile(ImageFileName);
+            this.BackgroundImage = Image.FromFile(_imageFileName);
         }
         catch (Exception ex) // 画像読み込みエラー一般
         {
             this.BackgroundImage = null;
-            string errorMessage = $"背景画像の読み込みに失敗しました: {ImageFileName}\n詳細: {ex.Message}";
+            string errorMessage = $"背景画像の読み込みに失敗しました: {_imageFileName}\n詳細: {ex.Message}";
             System.Diagnostics.Debug.WriteLine(errorMessage);
             MessageBox.Show(errorMessage, "画像読み込みエラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -245,8 +251,7 @@ public partial class Form1 : Form
 
     private async Task AddResponseToFileAsync(string newResponse)
     {
-        const string responsesFileName = "cat_responses.txt";
-        string filePath = Path.Combine(AppContext.BaseDirectory, responsesFileName);
+        string filePath = Path.Combine(AppContext.BaseDirectory, _catResponsesFileName);
         try
         {
             await File.AppendAllTextAsync(filePath, newResponse + Environment.NewLine);
